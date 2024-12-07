@@ -94,7 +94,6 @@ st.markdown("""
             background-color: #C9A68E;
             color: black;
             }
-
         </style>    
     """, unsafe_allow_html=True)
 
@@ -103,14 +102,14 @@ caminho_arquivo = "dados.csv"
 def inicializar_csv(caminho_arquivo):
     if not os.path.exists(caminho_arquivo):
         df = pd.DataFrame({
-            "Candidato": ["Candidato 1", "Candidato 2"],  # Substitua pelos nomes dos candidatos
+            "Candidato": ["Candidato 1", "Candidato 2"],
             "Votos": [0, 0]
         })
         df.to_csv(caminho_arquivo, index=False)
 
 def registrar_voto(candidato, caminho_arquivo):
     df = pd.read_csv(caminho_arquivo)
-    df.loc[df['Candidato'] == candidato, 'Votos'] += 1
+    df.loc[df['Candidatos'] == candidato, 'Votos'] += 1
     df.to_csv(caminho_arquivo, index=False)
 
 # Títulos e descrição
@@ -133,7 +132,6 @@ if "votos_candidato2" not in st.session_state:
 if "ja_votou" not in st.session_state:
     st.session_state.ja_votou = False
 
-# Verifica se o usuário já votou
 
 col1, col2 = st.columns(2)
 
@@ -152,16 +150,17 @@ else:
 
     with col3:
         if st.button("Votar no Candidato 1", key='candidato1'):  
-            
+            registrar_voto("Candidato 1", "dados.csv")
             st.session_state.votos_candidato1 += 1
             st.session_state.ja_votou = True
             st.success("Seu voto foi registrado para o Candidato 1!")
  
     with col4:
         if st.button("Votar no Candidato 2", key='candidato2'):
+            registrar_voto("Candidato 2", "dados.csv")
             st.session_state.votos_candidato2 += 1
             st.session_state.ja_votou = True
-            st.success("Seu voto foi registrado para o Candidato 2!")
+            st.success("Seu voto foi registrado para o Candidato 2!")             
 
 col5, col6 = st.columns(2)
 with col5:
